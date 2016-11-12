@@ -53,13 +53,34 @@ def selection_sort(arr_list):
     return '%s comparisons and %s exchanges.' % (num_of_comparison, num_of_exchanges) # For bigO benchmarking
 
 
+def insertion_sort(arr_list):
+    # For bigO benchmarking
+    num_of_comparison = 0
+
+    for pass_num in range(1, len(arr_list)):
+        current_value = arr_list[pass_num]
+        position = pass_num
+
+        while position > 0 and arr_list[position - 1] > current_value:
+            num_of_comparison += 1 # For bigO benchmarking
+            arr_list[position] = arr_list[position - 1]
+            position -= 1
+
+        arr_list[position] = current_value
+
+    # In general, a shift operation requires approximately a third of the
+    # processing work of an exchange since only one assignment is performed.
+    return '%s comparisons and %s shifts.' % (num_of_comparison, num_of_comparison) # For bigO benchmarking
+
+
 if __name__ == '__main__':
     import timeit
 
     unsorted_list = [54, 26, 93, 17, 77, 31, 44, 55, 20]
+
     sorted_list = [17, 20, 26, 31, 44, 54, 55, 77, 93]
 
-    sorting_algos = [bubble_sort, short_bubble_sort, selection_sort]
+    sorting_algos = [bubble_sort, short_bubble_sort, selection_sort, insertion_sort]
 
     for sorting_algo in sorting_algos:
         print('{}: {} sec, {}'.format(
