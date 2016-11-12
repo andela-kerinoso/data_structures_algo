@@ -73,6 +73,41 @@ def insertion_sort(arr_list):
     return '%s comparisons and %s shifts.' % (num_of_comparison, num_of_comparison) # For bigO benchmarking
 
 
+def merge_sort(arr_list):
+    if len(arr_list) > 1:
+        mid = len(arr_list) // 2
+
+        # splitting takes place here
+        left_list = arr_list[:mid]
+        right_list = arr_list[mid:]
+
+        merge_sort(left_list)
+        merge_sort(right_list)
+
+        i = j = k = 0
+
+        # merging begins here
+        while i < len(left_list) and j < len(right_list):
+            if left_list[i] < right_list[j]:
+                arr_list[k] = left_list[i]
+                i += 1
+            else:
+                arr_list[k] = right_list[j]
+                j += 1
+
+            k += 1
+
+        while i < len(left_list):
+            arr_list[k] = left_list[i]
+            i += 1
+            k += 1
+
+        while j < len(right_list):
+            arr_list[k] = right_list[j]
+            j += 1
+            k += 1
+
+
 if __name__ == '__main__':
     import timeit
 
@@ -80,7 +115,10 @@ if __name__ == '__main__':
 
     sorted_list = [17, 20, 26, 31, 44, 54, 55, 77, 93]
 
-    sorting_algos = [bubble_sort, short_bubble_sort, selection_sort, insertion_sort]
+    sorting_algos = [
+        bubble_sort, short_bubble_sort, selection_sort,
+        insertion_sort, merge_sort
+    ]
 
     for sorting_algo in sorting_algos:
         print('{}: {} sec, {}'.format(
