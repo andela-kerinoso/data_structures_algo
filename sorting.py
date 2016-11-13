@@ -108,6 +108,40 @@ def merge_sort(arr_list):
             k += 1
 
 
+def quick_sort(arr_list):
+    quick_sort_helper(arr_list, 0, len(arr_list) - 1)
+
+def quick_sort_helper(arr_list, first_index, last_index):
+    if first_index < last_index:
+        # Unlike merge_sort, no additional storage is required as the list is partitioned
+        split_point_index = partition(arr_list, first_index, last_index)
+
+        quick_sort_helper(arr_list, first_index, split_point_index - 1)
+        quick_sort_helper(arr_list, split_point_index + 1, last_index)
+
+def partition(arr_list, first_index, last_index):
+    pivot_value = arr_list[first_index]
+    left_mark = first_index + 1
+    right_mark = last_index
+
+    quit = False
+    while not quit:
+        while left_mark <= right_mark and arr_list[left_mark] <= pivot_value:
+            left_mark += 1
+
+        while right_mark >= left_mark and arr_list[right_mark] >= pivot_value:
+            right_mark -= 1
+
+        if left_mark > right_mark:
+            quit = True
+        else:
+            arr_list[left_mark], arr_list[right_mark] = arr_list[right_mark], arr_list[left_mark]
+
+    arr_list[first_index], arr_list[right_mark] = arr_list[right_mark], arr_list[first_index]
+
+    return right_mark
+
+
 if __name__ == '__main__':
     import timeit
 
@@ -117,7 +151,7 @@ if __name__ == '__main__':
 
     sorting_algos = [
         bubble_sort, short_bubble_sort, selection_sort,
-        insertion_sort, merge_sort
+        insertion_sort, merge_sort, quick_sort
     ]
 
     for sorting_algo in sorting_algos:
