@@ -155,7 +155,7 @@ if __name__ == '__main__':
     ]
 
     for sorting_algo in sorting_algos:
-        print('{}: {} sec, {}'.format(
+        print('{}: {} ms, {}'.format(
                 sorting_algo.__name__,
                 timeit.timeit(
                     '%s(%s)' % (sorting_algo.__name__, unsorted_list),
