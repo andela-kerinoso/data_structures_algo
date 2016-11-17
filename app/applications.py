@@ -1,5 +1,6 @@
 from . import data_structures
 
+
 # 1. Stack application
 def balanced_parentheses_checker(symbol_string):
     """Verify that a set of parentheses is balanced."""
@@ -27,6 +28,24 @@ def balanced_parentheses_checker(symbol_string):
 
     return opening_symbols_stack.is_empty() and counter == symbol_count
 
+# 2. Stack application
+def base_converter(decimal_num, base):
+    """Convert a decimal number to base 2 or 8 or 16."""
+
+    digits = '0123456789ABCDEF'
+    remainder_stack = data_structures.Stack()
+    conversion_result = ''
+
+    while decimal_num > 0:
+        remainder_stack.push(decimal_num % base)
+        decimal_num = decimal_num // base
+
+    while not remainder_stack.is_empty():
+        conversion_result += digits[remainder_stack.pop()]
+
+    return conversion_result
+
 
 if __name__ == '__main__':
     print(balanced_parentheses_checker('[]{[]{([][])}()}'))
+    [print(base_converter(233, base)) for base in [2, 8, 16]]
