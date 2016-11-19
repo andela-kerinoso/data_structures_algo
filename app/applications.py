@@ -46,6 +46,20 @@ def base_converter(decimal_num, base):
     return conversion_result
 
 
+# 3. Queue application: Simulation of Hot Potato Game
+def hot_potato(participants_list, num_of_passes):
+    participants = data_structures.Queue(participants_list)
+
+    while participants.size() > 1:
+        for _ in range(num_of_passes):
+            participants.enqueue(participants.dequeue())
+
+        participants.dequeue()
+
+    return participants.dequeue()
+
+
 if __name__ == '__main__':
     print(balanced_parentheses_checker('[]{[]{([][])}()}'))
     [print(base_converter(233, base)) for base in [2, 8, 16]]
+    print(hot_potato(['Bill', 'David', 'Susan', 'Jane', 'Kent', 'Brad'], 7))
