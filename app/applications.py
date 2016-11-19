@@ -59,7 +59,25 @@ def hot_potato(participants_list, num_of_passes):
     return participants.dequeue()
 
 
+# 4. Deque application
+def palindrome_checker(input_string):
+    whitelist_char = 'abcdefghijklmnopqrstuvwxyz'
+    cleaned_char = [x for x in input_string.lower() if x in whitelist_char]
+
+    char_deque = data_structures.Deque(cleaned_char)
+
+    still_equal = True
+
+    while char_deque.size() > 1 and still_equal:
+        if char_deque.remove_front() != char_deque.remove_rear():
+            still_equal = False
+
+    return still_equal
+
+
+
 if __name__ == '__main__':
     print(balanced_parentheses_checker('[]{[]{([][])}()}'))
     [print(base_converter(233, base)) for base in [2, 8, 16]]
     print(hot_potato(['Bill', 'David', 'Susan', 'Jane', 'Kent', 'Brad'], 7))
+    [print(palindrome_checker(x)) for x in ["radar", "lsdkjfskf", "Madam I'm Adam", "No lemon, no melon."]]
