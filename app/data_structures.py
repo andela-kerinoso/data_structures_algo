@@ -20,3 +20,24 @@ class Stack(object):
 
     def size(self):
         return len(self.items)
+
+
+class Queue(object):
+    """Implementation of Queue ADT."""
+
+    def __init__(self, items=[]):
+        self.items = items
+        self.items.reverse()
+
+    def is_empty(self):
+        return self.items == []
+
+    def enqueue(self, item):
+        self.items.insert(0, item)
+
+    def dequeue(self):
+        if not self.is_empty():
+            return self.items.pop()
+
+    def size(self):
+        return len(self.items)
