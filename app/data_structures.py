@@ -165,6 +165,23 @@ class UnorderedList(object):
             node.set_next(current)
             previous.set_next(node)
 
+    def retrieve(self, position):
+        current = self.head
+        found_pos = False
+        counter = 0
+
+        while current and not found_pos:
+            if counter == position:
+                found_pos = True
+            else:
+                current = current.get_next()
+                counter += 1
+
+        if found_pos:
+            return current.get_data()
+
+        raise ValueError('Index %s is out of range' % position)
+
     def index(self, item):
         current = self.head
         found = False
@@ -182,12 +199,38 @@ class UnorderedList(object):
 
         raise ValueError('%s is not in the list' % item)
 
-    def pop(self):
-        if self.head:
-            popped_data = self.head.get_data()
-            self.head = self.head.get_next()
+    def pop(self, position=0):
+        previous = None
+        current = self.head
+        found_pos = False
+        counter = 0
 
+        while current and not found_pos:
+            if counter == position:
+                found_pos = True
+            else:
+                previous, current = current, current.get_next()
+                counter += 1
+
+        if previous is None:
+            if current is not None:
+                popped_data = current.get_data()
+                self.head = current.get_next()
+        else:
+            if current is not None:
+                popped_data = current.get_data()
+                previous.set_next(current.get_next())
+
+        if current:
             return popped_data
+
+        raise ValueError('Index %s is out of bound.' % position)
+
+    def __getitem__(self, position):
+        return self.retrieve(position)
+
+    def __setitem__(self, position, item):
+        self.insert(position, item)
 
     def __str__(self):
         items = ''
