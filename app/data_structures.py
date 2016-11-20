@@ -199,18 +199,21 @@ class UnorderedList(object):
 
         raise ValueError('%s is not in the list' % item)
 
-    def pop(self, position=0):
+    def pop(self, position=None):
         previous = None
         current = self.head
-        found_pos = False
-        counter = 0
+        found_pos = True
+
+        if position is not None:
+            found_pos = False
+            counter = self.size() - 1
 
         while current and not found_pos:
             if counter == position:
                 found_pos = True
             else:
                 previous, current = current, current.get_next()
-                counter += 1
+                counter -= 1
 
         if previous is None:
             if current is not None:
