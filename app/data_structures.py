@@ -143,11 +143,11 @@ class UnorderedList(object):
         if previous is None:
             if current is not None:
                 self.head = current.get_next()
+                self.length -= 1
         else:
             if current is not None:
                 previous.set_next(current.get_next())
-
-        self.length -= 1
+                self.length -= 1
 
     def insert(self, position, item):
         previous = None
