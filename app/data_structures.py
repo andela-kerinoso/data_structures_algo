@@ -259,3 +259,169 @@ class UnorderedList(object):
             items = 'None'
 
         return items
+
+
+class OrderedList(object):
+    """Implementation of ordered Linked list."""
+
+    def __init__(self):
+        self.head = None
+        self.length = 0
+
+    def is_empty(self):
+        return self.head == None
+
+    def add(self, item):
+        previous = None
+        current = self.head
+        found = False
+
+        while current and not found:
+            if current.get_data() < item:
+                found = True
+            else:
+                previous, current = current, current.get_next()
+
+        node = Node(item)
+        node.set_next(current)
+        self.length += 1
+
+        if previous is None:
+            self.head = node
+        else:
+            previous.set_next(node)
+
+    def size(self):
+        current = self.head
+        counter = 0
+
+        while current is not None:
+            current = current.get_next()
+            counter += 1
+
+        return counter
+
+    def search(self, item):
+        current = self.head
+        found = False
+
+        while current and current.get_data() >= item and not found:
+            if current.get_data() == item:
+                found = True
+            else:
+                current = current.get_next()
+
+        return found
+
+    def remove(self, item):
+        previous = None
+        current = self.head
+        found = False
+
+        while current and current.get_data() >= item and not found:
+            if current.get_data() == item:
+                found = True
+            else:
+                previous, current = current, current.get_next()
+
+        if previous is None:
+            if found and current is not None:
+                self.head = current.get_next()
+                self.length -= 1
+        else:
+            if found and current is not None:
+                previous.set_next(current.get_next())
+                self.length -= 1
+
+    def retrieve(self, position):
+        current = self.head
+        found_pos = False
+        counter = self.length - 1
+
+        while current and not found_pos:
+            if counter == position:
+                found_pos = True
+            else:
+                current = current.get_next()
+                counter -= 1
+
+        if found_pos:
+            return current.get_data()
+
+        raise ValueError('Index %s is out of bound.' % position)
+
+    def index(self, item):
+        current = self.head
+        found = False
+        counter = self.length - 1
+
+        while current and current.get_data >= item and not found:
+            if current.get_data() == item:
+                found = True
+            else:
+                current = current.get_next()
+                counter -= 1
+
+        if found:
+            return counter
+
+        raise ValueError('%s is not in the list' % item)
+
+    def pop(self, position=None):
+        previous = None
+        current = self.head
+        found_pos = True
+
+        if position is not None:
+            found_pos = False
+            counter = self.length - 1
+
+        while current and not found_pos:
+            if counter == position:
+                found_pos = True
+            else:
+                previous, current = current, current.get_next()
+                counter -= 1
+
+        if previous is None:
+            if current is not None:
+                popped_data = current.get_data()
+                self.head = current.get_next()
+        else:
+            if current is not None:
+                popped_data = current.get_data()
+                previous.set_next(current.get_next())
+
+        if current:
+            self.length -= 1
+            return popped_data
+
+        raise ValueError('Index %s is out of bound.' % position if position else 'List is empty.')
+
+    def __getitem__(self, position):
+        return self.retrieve(position)
+
+    def __str__(self):
+        items = ''
+
+        current = self.head
+        counter = 0
+
+        while current:
+            if not items:
+                items = ']'
+
+            items = str(current.get_data()) + items
+            current = current.get_next()
+
+            if current:
+                items = ', ' + items
+
+            counter += 1
+
+        if items:
+            items = '[' + items
+        else:
+            items = '[]'
+
+        return items
