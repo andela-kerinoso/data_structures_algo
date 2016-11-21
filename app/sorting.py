@@ -53,23 +53,42 @@ def selection_sort(arr_list):
     return '%s comparisons and %s exchanges.' % (num_of_comparison, num_of_exchanges) # For bigO benchmarking
 
 
-def insertion_sort(arr_list):
+def sublist_insertion_sort(arr_list, start_index=0, gap=1):
     # For bigO benchmarking
     num_of_comparison = 0
 
-    for pass_num in range(1, len(arr_list)):
+    for pass_num in range(start_index + gap, len(arr_list), gap):
         current_value = arr_list[pass_num]
         position = pass_num
 
-        while position > 0 and arr_list[position - 1] > current_value:
+        while position > start_index and arr_list[position - gap] > current_value:
             num_of_comparison += 1 # For bigO benchmarking
-            arr_list[position] = arr_list[position - 1]
-            position -= 1
+            arr_list[position] = arr_list[position - gap]
+            position -= gap
 
         arr_list[position] = current_value
 
     # In general, a shift operation requires approximately a third of the
     # processing work of an exchange since only one assignment is performed.
+    return num_of_comparison
+
+
+def insertion_sort(arr_list):
+    num_of_comparison = sublist_insertion_sort(arr_list)
+
+    return '%s comparisons and %s shifts.' % (num_of_comparison, num_of_comparison) # For bigO benchmarking
+
+
+def shell_sort(arr_list):
+    num_of_sublists = len(arr_list) // 2
+    num_of_comparison = 0
+
+    while num_of_sublists > 0:
+        for start_index in range(num_of_sublists):
+            num_of_comparison += sublist_insertion_sort(arr_list, start_index=start_index, gap=num_of_sublists)
+
+        num_of_sublists //= 2
+
     return '%s comparisons and %s shifts.' % (num_of_comparison, num_of_comparison) # For bigO benchmarking
 
 
@@ -151,7 +170,7 @@ if __name__ == '__main__':
 
     sorting_algos = [
         bubble_sort, short_bubble_sort, selection_sort,
-        insertion_sort, merge_sort, quick_sort
+        insertion_sort, shell_sort, merge_sort, quick_sort
     ]
 
     for sorting_algo in sorting_algos:
