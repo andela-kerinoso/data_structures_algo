@@ -338,3 +338,65 @@ class UnorderedList(OrderedList):
 
     def __setitem__(self, position, item):
         self.insert(position, item)
+
+
+class Map(object):
+    """Implementation of Map ADT."""
+
+    def __init__(self, size):
+        self.size = size
+        self.slots = [None] * self.size
+        self.data = [None] * self.size
+
+    @staticmethod
+    def hash_function(key, table_size):
+        total = 0
+
+        for pos in range(len(key)):
+            total += ord(key[pos]) * (pos + 1)
+
+        return total % table_size
+
+    @staticmethod
+    def rehash_function(old_hash, table_size):
+        return (old_hash + 1) % table_size
+
+    def put(self, key, data):
+        hash_value = self.hash_function(key, self.size)
+
+        if self.slots[hash_value] is None:
+            self.slots[hash_value] = key
+            self.data[hash_value] = data
+        elif self.slots[hash_value] == key:
+            self.data[hash_value] = data
+        else:
+            hash_value = self.rehash_function(hash_value, self.size)
+            while self.slots[hash_value] is not None and self.slots[hash_value] != key:
+                hash_value = self.rehash_function(hash_value, self.size)
+
+            if self.slots[hash_value] is None:
+                self.slots[hash_value] = key
+                self.data[hash_value] = data
+            else:
+                self.data[hash_value] = data
+
+    def get(self, key):
+        hash_value = self.hash_function(key, self.size)
+        found = stop = False
+        start_hash_value = hash_value
+
+        while self.slots[hash_value] is not None and not (found or stop):
+            if self.slots[hash_value] == key:
+                found = True
+            else:
+                hash_value = self.rehash_function(hash_value, self.size)
+                if hash_value == start_hash_value:
+                    stop = True
+
+        return self.data[hash_value]
+
+    def __getitem__(self, key):
+        return self.get(key)
+
+    def __setitem__(self, key, data):
+        self.put(key, data)
