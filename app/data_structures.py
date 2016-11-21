@@ -435,3 +435,72 @@ class BinaryTree(object):
 
     def get_node_value(self):
         return self.key
+
+
+class MinBinaryHeap(object):
+    """Implementation of Heap ADT."""
+
+    def __init__(self):
+        self.heap_list = [0]
+        self.size = 0
+
+    def insert(self, item):
+        self.heap_list.append(item)
+        self.size += 1
+        self.percolate_up()
+
+    def percolate_up(self):
+        current_index = self.size
+        parent_index = self.size // 2
+
+        while parent_index > 0:
+            if self.heap_list[current_index] < self.heap_list[parent_index]:
+                tmp = self.heap_list[parent_index]
+                self.heap_list[parent_index] = self.heap_list[current_index]
+                self.heap_list[current_index] = tmp
+                current_index, parent_index = parent_index, parent_index // 2
+            else:
+                parent_index = 0
+
+    def remove_min(self):
+        if self.size >= 1:
+            min_value = self.heap_list[1]
+            self.heap_list[1] = self.heap_list[self.size]
+            self.heap_list.pop()
+            self.size -= 1
+            self.percolate_down(1)
+
+            return min_value
+
+    def percolate_down(self, index):
+        current_index = index
+        left_child_index = index * 2
+
+        while left_child_index <= self.size:
+            min_child = self.min_child(current_index)
+            if self.heap_list[min_child] < self.heap_list[current_index]:
+                tmp = self.heap_list[current_index]
+                self.heap_list[current_index] = self.heap_list[min_child]
+                self.heap_list[min_child] = tmp
+                current_index, left_child_index = min_child, min_child * 2
+            else:
+                left_child_index = self.size + 1
+
+
+    def min_child(self, current_index):
+        if current_index * 2 + 1 > self.size and current_index * 2 <= self.size:
+            return current_index * 2
+        else:
+            if self.heap_list[current_index * 2] < self.heap_list[current_index * 2 + 1]:
+                return current_index * 2
+            else:
+                return current_index * 2 + 1
+
+    def build_heap(self, arr_list):
+        index = len(arr_list) // 2
+        self.heap_list = [0] + arr_list
+        self.size = len(arr_list)
+
+        while index > 0:
+            self.percolate_down(index)
+            index -= 1
