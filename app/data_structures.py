@@ -400,3 +400,38 @@ class Map(object):
 
     def __setitem__(self, key, data):
         self.put(key, data)
+
+
+class BinaryTree(object):
+    """Implementation of BinaryTree ADT."""
+
+    def __init__(self, data):
+        self.key = data
+        self.left_child = None
+        self.right_child = None
+
+    def get_left_child(self):
+        return self.left_child
+
+    def get_right_child(self):
+        return self.right_child
+
+    def insert_left(self, data):
+        if self.left_child == None:
+            self.left_child = BinaryTree(data)
+        else:
+            node_tree = BinaryTree(data)
+            node_tree.left_child, self.left_child = self.left_child, node_tree
+
+    def insert_right(self, data):
+        if self.right_child == None:
+            self.right_child = BinaryTree(data)
+        else:
+            node_tree = BinaryTree(data)
+            node_tree.right_child, self.right_child = self.right_child, node_tree
+
+    def set_node_value(self, data):
+        self.key = data
+
+    def get_node_value(self):
+        return self.key
