@@ -504,3 +504,67 @@ class MinBinaryHeap(object):
         while index > 0:
             self.percolate_down(index)
             index -= 1
+
+
+class Vertex(object):
+    """Implementation of Graph Vertex."""
+
+    def __init__(self, key):
+        self.id = key
+        self.neighbors = {}
+
+    def add_neighbor(self, vertex, weight):
+        self.neighbors[vertex] = weight
+
+    def get_neighbors(self):
+        return [x for x in self.neighbors.keys()]
+
+    def get_weight(self, neighbor):
+        if neighbor in self.get_neighbors():
+            return self.neighbors[neighbor]
+
+    def __repr__(self):
+        return self.id
+
+    def __str__(self):
+        return '{} is connected to: {}'.format(self.id, [x.id for x in self.neighbors])
+
+
+class Graph(object):
+    """Implementation of Graph ADT."""
+
+    def __init__(self):
+        self.vertices = {}
+        self.vertices_count = 0
+
+    def __contains__(self, key):
+        return key in self.vertices
+
+    def __iter__(self):
+        return iter(self.vertices.values())
+
+    def add_vertex(self, key):
+        new_vertex = Vertex(key)
+
+        if key not in self.vertices:
+            self.vertices_count += 1
+
+        self.vertices[key] = new_vertex
+
+        return new_vertex
+
+    def add_edge(self, left_vertex, right_vertex, weight=0):
+        if left_vertex not in self.vertices:
+            self.add_vertex(left_vertex)
+
+        if right_vertex not in self.vertices:
+            self.add_vertex(right_vertex)
+
+        self.vertices[left_vertex].add_neighbor(self.vertices[right_vertex], weight)
+
+    def get_vertex(self, key):
+        if key in self.vertices:
+            return self.vertices[key]
+
+    def get_vertices(self):
+        return [x for x in self.vertices.values()]
